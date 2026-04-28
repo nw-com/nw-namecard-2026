@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>西北保全 - 幻燈片瀏覽</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #ffffff;
+            color: #000000;
+            font-family: "Microsoft JhengHei", sans-serif;
+        }
+
+        /* 頁首 - 10% (紅底白字) */
+        header {
+            height: 10vh;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            background-color: #e11d48; /* 亮紅色 */
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* 內容容器 - 80% (白底黑字) */
+        main {
+            height: 80vh;
+            width: 100%;
+            margin-top: 10vh;
+            position: relative;
+            overflow-y: auto;
+            background-color: #ffffff;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* 頁尾 - 10% (紅底白字) */
+        footer {
+            height: 10vh;
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            background-color: #e11d48;
+            color: white;
+            display: flex;
+            align-items: stretch; /* 讓按鈕填滿高度 */
+            justify-content: center;
+        }
+
+        .footer-btn {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            color: white;
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+
+        .footer-btn:active {
+            background-color: #be123c; /* 點擊時加深紅色 */
+        }
+
+        .footer-btn:first-child {
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* 圖片容器 */
+        .content-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .slide-item {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .slide-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid #eee;
+        }
+
+        .slide-label {
+            margin-top: 12px;
+            color: #333;
+            font-weight: bold;
+            font-size: 1rem;
+            letter-spacing: 0.05em;
+        }
+
+        /* 滾動條樣式 */
+        main::-webkit-scrollbar {
+            width: 6px;
+        }
+        main::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1 class="text-xl font-bold tracking-[0.3em]">西北保全</h1>
+    </header>
+
+    <main id="mainArea">
+        <div id="content" class="content-container">
+            <!-- 圖片將由 JS 生成 -->
+        </div>
+    </main>
+
+    <footer>
+        <button class="footer-btn" onclick="window.location.href='tel:02-12345678'">
+            <i data-lucide="phone" class="w-6 h-6 mb-1"></i>
+            <span class="text-xs">聯絡電話</span>
+        </button>
+        <button class="footer-btn" onclick="alert('開啟 Line 聯絡')">
+            <i data-lucide="message-circle" class="w-6 h-6 mb-1"></i>
+            <span class="text-xs">Line 諮詢</span>
+        </button>
+    </footer>
+
+    <script>
+        // 圖片清單
+        const slides = [
+            "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=1600&q=80",
+            "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1600&q=80",
+            "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1600&q=80",
+            "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=1600&q=80",
+            "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1600&q=80"
+        ];
+
+        const content = document.getElementById('content');
+
+        function init() {
+            slides.forEach((url, index) => {
+                const item = document.createElement('div');
+                item.classList.add('slide-item');
+                item.innerHTML = `
+                    <img src="${url}" alt="Slide ${index + 1}" loading="lazy">
+                    <div class="slide-label">服務項目 ${index + 1}</div>
+                `;
+                content.appendChild(item);
+            });
+
+            // 初始化圖標
+            lucide.createIcons();
+        }
+
+        init();
+    </script>
+</body>
+</html>
