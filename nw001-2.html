@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>量子西北保全 - 18秒簡報</title>
 
         <!-- Line / Facebook 分享預覽設定 -->
@@ -16,6 +16,7 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
     <style>
         body, html {
             margin: 0;
@@ -36,7 +37,7 @@
             top: 0;
             left: 0;
             z-index: 100;
-            background-color: #e11d48; /* 亮紅色 */
+            background-color: #ff0000; /* 大紅色 */
             color: white;
             display: flex;
             align-items: center;
@@ -63,7 +64,7 @@
             bottom: 0;
             left: 0;
             z-index: 100;
-            background-color: #e11d48;
+            background-color: #ff0000;
             color: white;
             display: flex;
             align-items: stretch; /* 讓按鈕填滿高度 */
@@ -84,7 +85,7 @@
         }
 
         .footer-btn:active {
-            background-color: #be123c; /* 點擊時加深紅色 */
+            background-color: #cc0000; /* 點擊時加深紅色 */
         }
 
         .footer-btn:not(:last-child) {
@@ -96,9 +97,9 @@
             max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
-            display: flex;
+            display: flex; 
             flex-direction: column;
-            gap: 40px;
+            gap: 20px;
         }
 
         .slide-item {
@@ -108,17 +109,34 @@
             align-items: center;
         }
 
-        .slide-item img {
+        .slide-item img, .slide-item .video-container {
+            width: 100%;
             max-width: 100%;
             height: auto;
             border-radius: 4px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             border: 1px solid #eee;
+            overflow: hidden;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
         }
 
         .slide-label {
-            margin-top: 12px;
-            color: #e11d48; /* 改為與主題一致的紅色 */
+            margin-top: 2px;
+            color: #ff0000; /* 改為大紅色 */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -198,25 +216,90 @@
         ];
 
         const content = document.getElementById('content');
+        const players = {}; // 儲存 YouTube 播放器實例
+
+        // 取得 YouTube ID 的輔助函數
+        function getYoutubeId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
+        // 當 YouTube API 準備就緒時
+        function onYouTubeIframeAPIReady() {
+            init();
+        }
 
         function init() {
             slides.forEach((url, index) => {
                 const item = document.createElement('div');
                 item.classList.add('slide-item');
-                item.innerHTML = `
-                    <img src="${url}" alt="Slide ${index + 1}" loading="lazy">
-                    <div class="slide-label">
-                        <i data-lucide="chevron-down" class="w-8 h-8"></i>
-                    </div>
-                `;
+                
+                const youtubeId = getYoutubeId(url);
+                
+                if (youtubeId) {
+                    const playerId = `player-${index}`;
+                    item.innerHTML = `
+                        <div class="video-container">
+                            <div id="${playerId}"></div>
+                        </div>
+                        <div class="slide-label">
+                            <i data-lucide="chevron-down" class="w-8 h-8"></i>
+                        </div>
+                    `;
+                    
+                    // 延遲初始化播放器，確保容器已存在於 DOM
+                    setTimeout(() => {
+                        players[playerId] = new YT.Player(playerId, {
+                            videoId: youtubeId,
+                            playerVars: {
+                                'autoplay': 0,
+                                'mute': 1,
+                                'loop': 1,
+                                'playlist': youtubeId,
+                                'controls': 1
+                            },
+                            events: {
+                                'onReady': (event) => {
+                                    setupObserver(document.getElementById(playerId), event.target);
+                                }
+                            }
+                        });
+                    }, 0);
+                } else {
+                    item.innerHTML = `
+                        <img src="${url}" alt="Slide ${index + 1}" loading="lazy">
+                        <div class="slide-label">
+                            <i data-lucide="chevron-down" class="w-8 h-8"></i>
+                        </div>
+                    `;
+                }
                 content.appendChild(item);
             });
 
-            // 初始化圖標
             lucide.createIcons();
         }
 
-        init();
+        // 設定滾動偵測
+        function setupObserver(element, player) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        player.playVideo();
+                    } else {
+                        player.pauseVideo();
+                    }
+                });
+            }, {
+                threshold: 0.5
+            });
+
+            observer.observe(element);
+        }
+
+        if (window.YT && window.YT.Player) {
+            init();
+        }
     </script>
 </body>
 </html>
