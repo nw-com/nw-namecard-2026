@@ -118,10 +118,22 @@
 
         .slide-label {
             margin-top: 12px;
-            color: #333;
-            font-weight: bold;
-            font-size: 1rem;
-            letter-spacing: 0.05em;
+            color: #e11d48; /* 改為與主題一致的紅色 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+
+        /* 隱藏最後一張圖片後的圖示 */
+        .slide-item:last-child .slide-label {
+            display: none;
         }
 
         /* 滾動條樣式 */
@@ -193,7 +205,9 @@
                 item.classList.add('slide-item');
                 item.innerHTML = `
                     <img src="${url}" alt="Slide ${index + 1}" loading="lazy">
-                    <div class="slide-label">P ${index + 1}</div>
+                    <div class="slide-label">
+                        <i data-lucide="chevron-down" class="w-8 h-8"></i>
+                    </div>
                 `;
                 content.appendChild(item);
             });
