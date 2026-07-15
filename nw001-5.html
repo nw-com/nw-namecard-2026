@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>量子西北保全 - 18秒簡報</title>
+
+        <!-- Line / Facebook 分享預覽設定 -->
+    <meta property="og:title" content="量子西北保全 - 18秒簡報">
+    <meta property="og:description" content="西北保全提供專業的社區守護、智能監控與特勤防護，為您打造安心的居住環境。">
+    <meta property="og:type" content="website">
+    <!-- 請將下方 URL 替換成您在網路上實際的圖案位址 -->
+    <meta property="og:image" content="https://nw-com.github.io/nw-namecard-2026/photo/nw001-5-01.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #ffffff;
+            color: #000000;
+            font-family: "Microsoft JhengHei", sans-serif;
+        }
+
+        /* 頁首 - 10% (紅底白字) */
+        header {
+            height: 10vh;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            background-color: #ff0000; /* 大紅色 */
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* 內容容器 - 80% (白底黑字) */
+        main {
+            height: 80vh;
+            width: 100%;
+            margin-top: 10vh;
+            position: relative;
+            overflow-y: auto;
+            background-color: #ffffff;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* 頁尾 - 10% (紅底白字) */
+        footer {
+            height: 10vh;
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            background-color: #ff0000;
+            color: white;
+            display: flex;
+            align-items: stretch; /* 讓按鈕填滿高度 */
+            justify-content: center;
+        }
+
+        .footer-btn {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            color: white;
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+
+        .footer-btn:active {
+            background-color: #cc0000; /* 點擊時加深紅色 */
+        }
+
+        .footer-btn:not(:last-child) {
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* 圖片容器 */
+        .content-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .slide-item {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .slide-item img, .slide-item .video-container {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid #eee;
+            overflow: hidden;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .slide-label {
+            margin-top: 2px;
+            color: #ff0000; /* 改為大紅色 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+
+        /* 隱藏最後一張圖片後的圖示 */
+        .slide-item:last-child .slide-label {
+            display: none;
+        }
+
+        /* 滾動條樣式 */
+        main::-webkit-scrollbar {
+            width: 6px;
+        }
+        main::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1 class="text-xl font-bold tracking-[0.3em]">西北保全</h1>
+    </header>
+
+    <main id="mainArea">
+        <div id="content" class="content-container">
+            <!-- 圖片將由 JS 生成 -->
+        </div>
+    </main>
+
+    <footer>
+        <button class="footer-btn" onclick="window.location.href='tel:0930820010'">
+            <i data-lucide="phone" class="w-6 h-6 mb-1"></i>
+            <span class="text-xs">聯絡電話</span>
+        </button>
+        <button class="footer-btn" onclick="window.location.href='https://line.me/ti/p/'">
+            <i data-lucide="message-circle" class="w-6 h-6 mb-1"></i>
+            <span class="text-xs">Line 諮詢</span>
+        </button>
+        <!-- 新增：送好禮按鈕 -->
+        <button class="footer-btn" onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSchd7wsIcnoAJA_hgli71Cu1GOfoCJvz_Zzi0jtP9CqoNI9xw/viewform?usp=header'">
+            <i data-lucide="gift" class="w-6 h-6 mb-1"></i>
+            <span class="text-xs">送好禮</span>
+        </button>
+    </footer>
+
+    <script>
+        // 圖片清單
+        const slides = [
+            "https://nw-com.github.io/nw-namecard-2026/photo/nw001-5-01.jpg",
+            "https://nw-com.github.io/nw-namecard-2026/photo/nwnc02.JPG",
+            "https://nw-com.github.io/nw-namecard-2026/photo/nwnc03.JPG",
+            "https://nw-com.github.io/nw-namecard-2026/photo/nwnc04.JPG",
+            "https://nw-com.github.io/nw-namecard-2026/photo/nwnc05.JPG",
+            "https://nw-com.github.io/nw-namecard-2026/photo/nwnc06.JPG",
+            "https://nw-com.github.io/nw-namecard-2026/photo/nwnc07.JPG",
+            "https://nw-com.github.io/nw-namecard-2026/photo/nwnc08.JPG",
+            "https://nw-com.github.io/nw-namecard-2026/photo/nwnc09.JPG",
+            "https://nw-com.github.io/nw-namecard-2026/photo/nwnc10.JPG",
+            "https://nw-com.github.io/nw-namecard-2026/photo/nwnc11.JPG",
+            "https://nw-com.github.io/nw-namecard-2026/photo/nwnc12.JPG",
+            "https://nw-com.github.io/nw-namecard-2026/photo/nwnc13.JPG",
+            "https://nw-com.github.io/nw-namecard-2026/photo/nwnc14.JPG",
+            "https://nw-com.github.io/nw-namecard-2026/photo/nwnc15.JPG",
+            "https://nw-com.github.io/nw-namecard-2026/photo/nwnc16.JPG",
+            "https://nw-com.github.io/nw-namecard-2026/photo/nwnc17.JPG",
+            "youtube.com/watch?v=ifEyblnLp_A&feature=youtu.be",
+            "https://nw-com.github.io/nw-namecard-2026/photo/nw001-5-21.jpg"
+        ];
+
+        const content = document.getElementById('content');
+        const players = {}; // 儲存 YouTube 播放器實例
+
+        // 取得 YouTube ID 的輔助函數
+        function getYoutubeId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
+        // 當 YouTube API 準備就緒時
+        function onYouTubeIframeAPIReady() {
+            init();
+        }
+
+        function init() {
+            slides.forEach((url, index) => {
+                const item = document.createElement('div');
+                item.classList.add('slide-item');
+                
+                const youtubeId = getYoutubeId(url);
+                
+                if (youtubeId) {
+                    const playerId = `player-${index}`;
+                    item.innerHTML = `
+                        <div class="video-container">
+                            <div id="${playerId}"></div>
+                        </div>
+                        <div class="slide-label">
+                            <i data-lucide="chevron-down" class="w-8 h-8"></i>
+                        </div>
+                    `;
+                    
+                    // 延遲初始化播放器，確保容器已存在於 DOM
+                    setTimeout(() => {
+                        players[playerId] = new YT.Player(playerId, {
+                            videoId: youtubeId,
+                            playerVars: {
+                                'autoplay': 0,
+                                'mute': 1,
+                                'loop': 1,
+                                'playlist': youtubeId,
+                                'controls': 1
+                            },
+                            events: {
+                                'onReady': (event) => {
+                                    setupObserver(document.getElementById(playerId), event.target);
+                                }
+                            }
+                        });
+                    }, 0);
+                } else {
+                    item.innerHTML = `
+                        <img src="${url}" alt="Slide ${index + 1}" loading="lazy">
+                        <div class="slide-label">
+                            <i data-lucide="chevron-down" class="w-8 h-8"></i>
+                        </div>
+                    `;
+                }
+                content.appendChild(item);
+            });
+
+            lucide.createIcons();
+        }
+
+        // 設定滾動偵測
+        function setupObserver(element, player) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        player.playVideo();
+                    } else {
+                        player.pauseVideo();
+                    }
+                });
+            }, {
+                threshold: 0.5
+            });
+
+            observer.observe(element);
+        }
+
+        if (window.YT && window.YT.Player) {
+            init();
+        }
+    </script>
+</body>
+</html>
